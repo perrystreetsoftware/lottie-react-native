@@ -33,8 +33,6 @@ public class LottieAnimationViewPropertyManager {
   private boolean animationNameDirty;
 
   private String animationName;
-  private LottieAnimationView.CacheStrategy cacheStrategy;
-  private Boolean useHardwareAcceleration;
   private ImageView.ScaleType scaleType;
   private String imageAssetsFolder;
   private Boolean enableMergePaths;
@@ -52,11 +50,6 @@ public class LottieAnimationViewPropertyManager {
     this.animationJson = json;
   }
 
-  public void setCacheStrategy(LottieAnimationView.CacheStrategy strategy) {
-    this.cacheStrategy = strategy;
-    this.animationNameDirty = true;
-  }
-
   public void setProgress(Float progress) {
     this.progress = progress;
   }
@@ -69,9 +62,6 @@ public class LottieAnimationViewPropertyManager {
     this.loop = loop;
   }
 
-  public void setUseHardwareAcceleration(boolean useHardwareAcceleration) {
-    this.useHardwareAcceleration = useHardwareAcceleration;
-  }
 
   public void setScaleType(ImageView.ScaleType scaleType) {
     this.scaleType = scaleType;
@@ -101,12 +91,12 @@ public class LottieAnimationViewPropertyManager {
     }
 
     if (animationJson != null) {
-      view.setAnimation(new JsonReader(new StringReader(animationJson)));
+      view.setAnimationFromJson(animationJson, Integer.toString(animationJson.hashCode()));
       animationJson = null;
     }
 
     if (animationNameDirty) {
-      view.setAnimation(animationName, cacheStrategy);
+      view.setAnimation(animationName);
       animationNameDirty = false;
     }
 
@@ -123,11 +113,6 @@ public class LottieAnimationViewPropertyManager {
     if (speed != null) {
       view.setSpeed(speed);
       speed = null;
-    }
-
-    if (useHardwareAcceleration != null) {
-      view.useHardwareAcceleration(useHardwareAcceleration);
-      useHardwareAcceleration = null;
     }
 
     if (scaleType != null) {
